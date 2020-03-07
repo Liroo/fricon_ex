@@ -1,0 +1,41 @@
+name: CI/CD lint/checks
+
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: iliade_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+    env:
+      MIX_ENV: test
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: 22.2
+          elixir-version: 1.10.2
+      - uses: actions/cache@v1
+        id: cache-mix
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}/mix.lock', github.workspace)) }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+      - run: make prepare
+      - run: make check
+      - run: make lint
+      - run: make test
