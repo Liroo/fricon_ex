@@ -1,73 +1,37 @@
 import Config
 
-defmodule Environment do
-  @moduledoc """
-  This modules provides various helpers to handle environment metadata
-  """
+# fricon
 
-  def get(key), do: System.get_env(key)
-
-  def get_boolean(key) do
-    case get(key) do
-      "true" -> true
-      "1" -> true
-      _ -> false
-    end
-  end
-
-  def get_integer(key) do
-    case get(key) do
-      value when is_bitstring(value) -> String.to_integer(value)
-      _ -> nil
-    end
-  end
-
-  def get_list_or_first_value(key) do
-    with value when is_bitstring(value) <- get(key),
-         [single_value] <- String.split(value, ",") do
-      single_value
-    else
-      value when is_list(value) -> value
-      _ -> nil
-    end
-  end
-end
-
-force_ssl = Environment.get_boolean("FORCE_SSL")
-scheme = if force_ssl, do: "https", else: "http"
-host = Environment.get("CANONICAL_HOST")
-port = Environment.get("PORT")
+host = System.get_env("CANONICAL_HOST") || "localhost"
+port = System.get_env("PORT") || "4000"
 
 config :fricon,
-  canonical_host: host,
-  force_ssl: force_ssl
+  canonical_host: host
 
+# Ecto
+
+# Pool size should be ((core_count * 2) + effective_spindle_count)
+# https://wiki.postgresql.org/wiki/Number_Of_Database_Connections#How_to_Find_the_Optimal_Database_Connection_Pool_Size
 config :fricon, Fricon.Repo,
-  pool_size: Environment.get_integer("DATABASE_POOL_SIZE"),
-  ssl: Environment.get_boolean("DATABASE_SSL"),
-  url: Environment.get("DATABASE_URL")
+  username: System.get_env("DATABASE_USERNAME") || "postgres",
+  password: System.get_env("DATABASE_PASSWORD") || "postgres",
+  database: System.get_env("DATABASE_DATABASE") || "fricon",
+  socket_dir: System.get_env("DATABASE_SOCKET_DIR"),
+  pool_size: System.get_env("DATABASE_POOL_SIZE") || 10,
+  timeout: 60_000
 
+# Phoenix
 config :fricon, FriconWeb.Endpoint,
-  debug_errors: Environment.get_boolean("DEBUG_ERRORS"),
   http: [port: port],
-  secret_key_base: Environment.get("SECRET_KEY_BASE"),
-  session_key: Environment.get("SESSION_KEY"),
-  signing_salt: Environment.get("SIGNING_SALT"),
-  static_url: [
-    scheme: Environment.get("STATIC_URL_SCHEME"),
-    host: Environment.get("STATIC_URL_HOST"),
-    port: Environment.get("STATIC_URL_PORT")
-  ],
-  url: [scheme: scheme, host: host, port: port]
+  secret_key_base:
+    System.get_env("SECRET_KEY_BASE") ||
+      "B2fXstz+JlOCa799ZJwXYm9WeFKC9shFLCyFlOBzNKW79n9j3Qrq4WSr7GAjtUW+"
 
-config :fricon, Corsica, origins: Environment.get_list_or_first_value("CORS_ALLOWED_ORIGINS")
-
-config :fricon,
-  basic_auth: [
-    username: Environment.get("BASIC_AUTH_USERNAME"),
-    password: Environment.get("BASIC_AUTH_PASSWORD")
-  ]
-
+# Monitoring
 config :sentry,
-  dsn: Environment.get("SENTRY_DSN"),
-  environment_name: Environment.get("SENTRY_ENVIRONMENT_NAME")
+  dsn: System.get_env("SENTRY_DSN"),
+  environment_name: System.get_env("SENTRY_ENVIRONMENT_NAME")
+
+if !System.get_env("SENTRY_DSN") do
+  config :sentry, included_environments: []
+end

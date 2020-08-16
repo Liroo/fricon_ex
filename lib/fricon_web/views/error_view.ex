@@ -1,10 +1,40 @@
 defmodule FriconWeb.ErrorView do
   use FriconWeb, :view
 
-  def render("400.json", _assigns) do
+  def render("error.json", errors) do
+    %{
+      errors: errors
+    }
+  end
+
+  def render("400.json", assigns) do
+    reason = Map.get(assigns, :reason)
+
+    message =
+      case reason do
+        %Ecto.Changeset{} ->
+          Ecto.Changeset.traverse_errors(reason, fn {msg, opts} ->
+            Enum.reduce(opts, msg, fn {key, value}, acc ->
+              String.replace(acc, "%{#{key}}", to_string(value))
+            end)
+          end)
+
+        error when is_binary(error) ->
+          error
+
+        _ ->
+          "-"
+      end
+
     %{
       error: "Bad request",
-      message: "-"
+      message: message
+    }
+  end
+
+  def render("401.json", _assigns) do
+    %{
+      error: "Unauthorized"
     }
   end
 

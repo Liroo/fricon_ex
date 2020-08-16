@@ -1,6 +1,6 @@
 # Contributing to the Fricon project
 
-Welcome in the little guide of how you can contribute to the Iliade project.
+Welcome in the little guide of how you can contribute to the fricon project.
 
 ## Prelude
 
@@ -10,7 +10,7 @@ Please be descriptive in every case. Please write in english. Please review care
 
 Spotted a bug? FINE! I like it! So please submit an [issue](https://github.com/ulysse-travel/ulysse-web/issues).
 
-Issue can be a question or simply a bug. Keep in mind that issue is about the Iliade project, so do not start a conversation outside the bounds. However, We can discuss about a new feature or things are done a way or another. 
+Issue can be a question or simply a bug. Keep in mind that issue is about the fricon project, so do not start a conversation outside the bounds. However, We can discuss about a new feature or things are done a way or another. 
 
 ## Pull Request
 
@@ -42,7 +42,7 @@ Some example of branch name:
 - good: `fix/provider-behaviour` -> a fix that happen on the behaviour of provider
 - good: `chore/unused-file` -> certainly a cleanup of unused files
 - good: `enhancement/currency-docs` -> an update of the currency documentation
-- bad: `hotfix/iliade` -> an hotfix on the project itself is not descriptive enough
+- bad: `hotfix/fricon` -> an hotfix on the project itself is not descriptive enough
 - bad: `f/currency-docs` -> an update of the currency documentation
 
 ### In the Pull Request list, we know what is the purpose

@@ -52,7 +52,7 @@ endif
 
 .PHONY: rel-cmd
 rel-cmd: # running the task after prod-release
-	_build/prod/rel/iliade/bin/fricon $(RUN_ARGS)
+	_build/prod/rel/fricon/bin/fricon $(RUN_ARGS)
 
 .PHONY: prod-start
 prod-start: prod-dependencies ## Start the server into production without release

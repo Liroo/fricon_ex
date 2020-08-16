@@ -8,9 +8,9 @@ This message will stay until the 1.0.0 version.
 
 ## Project
 
-Fricon is a project about trading. 💸 Its ambition is to provide an easy way to automatize an easy way to trade with little knowledge of the stock market.
+Fricon is a project about trading. 💸 Its ambition is to provide an easy way to automatize the trading with little knowledge of the stock market.
 
-It's a open-source self hosted solution that you can use with the front that will comes together (not yet developped).
+It's an open-source self hosted solution that you can use with the front that will comes together (not yet developped).
 
 The API will be split in parts such as:
   - API: a REST API that render json. Used for any comunication with external client.
@@ -33,6 +33,10 @@ The project is build with [Elixir][elixir] which is itself built on top of [erla
   - Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Appendix
+
+The repository is currently open-sourced. It's not necessary for an infinite time but I don't find a reason why I would put this one in private.
 
 [elixir]: https://elixir-lang.org/
 [erlang]: https://www.erlang.org/

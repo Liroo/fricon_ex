@@ -58,6 +58,9 @@ defmodule Fricon.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:jason, "~> 1.1"},
 
+      # Password hash
+      {:argon2_elixir, "~> 2.0"},
+
       # Database
       {:ecto_sql, "~> 3.2"},
       {:postgrex, "~> 0.15"},
